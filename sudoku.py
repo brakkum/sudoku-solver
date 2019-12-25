@@ -13,9 +13,9 @@ class Sudoku:
         # an array that has 9 arrays that have 9 values each
         # self.board[0] is the first row
         # self.board[0][0] - self.board[0][8] is the first column
-        self.board = [ [None for _ in range(9)] for _ in range(9) ]
+        self.board = [[None for _ in range(9)] for _ in range(9)]
         # possible values for each individual cell
-        self.possible_cell_nums = [ [ [ _ for _ in range(1, 10) ] for _ in range(9)] for _ in range(9) ]
+        self.possible_cell_nums = [[[_ for _ in range(1, 10)] for _ in range(9)] for _ in range(9)]
         self.initial_board = initial_board
 
     def populate_initial_board(self):
@@ -45,7 +45,7 @@ class Sudoku:
             cprint("Row {}".format(i), "cyan")
             row = self.board[i]
             # what numbers are already populated for this row
-            existing_row_nums = [ _ for _ in row if _ is not None ]
+            existing_row_nums = [_ for _ in row if _ is not None]
             print("Existent row nums: {}".format(existing_row_nums))
             # iterate over each cell in the row
             for j in range(len(row)):
@@ -70,7 +70,7 @@ class Sudoku:
         cprint("Update columns", "green")
         # iterate over current rows in board
         for i in range(len(self.board)):
-            col = [ _ for _ in [row[i] for row in self.board] ]
+            col = [_ for _ in [row[i] for row in self.board]]
             cprint("column {}: {}".format(i, col), "cyan")
             # what numbers are already populated for this column
             existing_col_nums = [ _ for _ in col if _ is not None ]
