@@ -44,17 +44,16 @@ class Sudoku:
                 print("cell {} of row {}: {}".format(j, i, self.board[i][j]))
                 # the possible values known so far for the current cell
                 cell_possible_nums = self.possible_cell_nums[i][j]
-                # if the length of possible cell nums is 1, it's already found
-                print("cell possible nums: {}".format(cell_possible_nums))
-                if len(cell_possible_nums) == 1:
-                    if self.board[i][j] is None:
-                        print("updating board[{}][{}]: {}".format(i, j, cell_possible_nums[0]))
-                        self.board[i][j] = cell_possible_nums[0]
-                    continue
                 # update the possible nums based on what nums are already in the row
                 new_possible_cell_nums = [num for num in cell_possible_nums if num not in existing_row_nums]
                 # set it and forget it
                 self.possible_cell_nums[i][j] = new_possible_cell_nums
+                print("cell possible nums: {}".format(cell_possible_nums))
+                # if the length of possible cell nums is 1, that's the number
+                if len(cell_possible_nums) == 1:
+                    if self.board[i][j] is None:
+                        print("updating board[{}][{}]: {}".format(i, j, cell_possible_nums[0]))
+                        self.board[i][j] = cell_possible_nums[0]
 
     def update_columns(self):
         print("Update columns")
@@ -70,17 +69,16 @@ class Sudoku:
                 print("cell {} of col {}: {}".format(j, i, self.board[j][i]))
                 # the possible values known so far for the current cell
                 cell_possible_nums = self.possible_cell_nums[j][i]
-                # if the length of possible cell nums is 1, it's already found
-                print("cell possible nums: {}".format(cell_possible_nums))
-                if len(cell_possible_nums) == 1:
-                    if self.board[j][i] is None:
-                        print("updating board[{}][{}]: {}".format(j, i, cell_possible_nums[0]))
-                        self.board[j][i] = cell_possible_nums[0]
-                    continue
                 # update the possible nums based on what nums are already in the row
                 new_possible_cell_nums = [num for num in cell_possible_nums if num not in existing_col_nums]
                 # set it and forget it
                 self.possible_cell_nums[j][i] = new_possible_cell_nums
+                print("cell possible nums: {}".format(cell_possible_nums))
+                # if the length of possible cell nums is 1, that's the answer
+                if len(cell_possible_nums) == 1:
+                    if self.board[j][i] is None:
+                        print("updating board[{}][{}]: {}".format(j, i, cell_possible_nums[0]))
+                        self.board[j][i] = cell_possible_nums[0]
         [print(_) for _ in self.possible_cell_nums]
 
     def update_squares(self):
