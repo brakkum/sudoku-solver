@@ -26,6 +26,7 @@ if __name__ == "__main__":
     ]
     sudoku = Sudoku(board)
     sudoku.populate_initial_board()
+    sudoku.solve_board()
 
 
 
