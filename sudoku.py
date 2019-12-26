@@ -27,6 +27,7 @@ class Sudoku:
             for j, cell in enumerate(row):
                 # if a cell has a value, update the board and possible nums
                 if cell is not None:
+                    print(cell)
                     self.board[i][j] = cell
                     self.possible_cell_nums[i][j] = [cell]
                     self.board_has_been_updated = True
@@ -103,6 +104,7 @@ class Sudoku:
                         self.board_has_been_updated = True
 
     def update_squares(self):
+        cprint("Update squares", "green")
         # loop over number of squares on x
         for i in range(3):
             # loop over number of squares on y
@@ -115,10 +117,8 @@ class Sudoku:
                         current_cell = self.board[i*3+square_i][j*3+square_j]
                         if current_cell is not None:
                             existing_square_nums.append(current_cell)
-                cprint(cells_to_check, "red")
                 cprint(existing_square_nums, "red")
                 for cell_x_and_y in cells_to_check:
-                    print(cell_x_and_y)
                     cell_possible_nums = self.possible_cell_nums[cell_x_and_y[0]][cell_x_and_y[1]]
                     # already found, continue
                     if len(cell_possible_nums) == 1:
@@ -130,9 +130,22 @@ class Sudoku:
                     if len(new_possible_cell_nums) == 1:
                         if self.board[cell_x_and_y[0]][cell_x_and_y[1]] is None:
                             cprint("updating board[{}][{}]: {}".format(cell_x_and_y[0], cell_x_and_y[1], new_possible_cell_nums[0]), "green")
+                            self.board[cell_x_and_y[0]][cell_x_and_y[1]] = new_possible_cell_nums[0]
                             self.board_has_been_updated = True
 
     def check_board(self):
         cprint("check board", "red")
-        cprint(self.board, "magenta")
-        pass
+        has_nones = False
+        for row in self.board:
+            for cell in row:
+                if cell is None:
+                    has_nones = True
+        if not has_nones:
+            self.is_solved = True
+            cprint("Solved!", "green")
+        self.print_board()
+
+    def print_board(self):
+        for row in self.board:
+            cprint(" | ".join([str(_) if _ is not None else " " for _ in row]))
+

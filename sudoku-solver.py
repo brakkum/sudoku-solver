@@ -24,6 +24,17 @@ if __name__ == "__main__":
         [None, None,    7,    9, None, None, None,    1, None],
         [   1, None,    6, None,    2,    5,    4, None, None]
     ]
+    # board = [
+    #     [   1,    2,    3, None, None, None, None, None, None],
+    #     [   4,    5,    6, None, None, None, None, None, None],
+    #     [   7,    8, None, None, None, None, None, None, None],
+    #     [None, None, None, None, None, None, None, None, None],
+    #     [None, None, None, None, None, None, None, None, None],
+    #     [None, None, None, None, None, None, None, None, None],
+    #     [None, None, None, None, None, None, None, None, None],
+    #     [None, None, None, None, None, None, None, None, None],
+    #     [None, None, None, None, None, None, None, None, None]
+    # ]
     sudoku = Sudoku(board)
     sudoku.populate_initial_board()
     sudoku.solve_board()
