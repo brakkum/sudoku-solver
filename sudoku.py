@@ -9,7 +9,7 @@ class Sudoku:
     def __init__(self, initial_board):
         self.is_solved = False
         self.iterations = 0
-        self.board_has_been_updated = False
+        # self.board_has_been_updated = False
         # the game board used after the initial_board is parsed.
         # an array that has 9 arrays that have 9 values each
         # self.board[0] is the first row
@@ -28,7 +28,7 @@ class Sudoku:
                 if cell is not None:
                     self.board[i][j] = cell
                     self.possible_cell_nums[i][j] = [cell]
-                    self.board_has_been_updated = True
+                    # self.board_has_been_updated = True
 
     def solve_board(self):
         cprint("starting to solve", "magenta")
@@ -40,10 +40,10 @@ class Sudoku:
             self.iterations += 1
             self.check_board()
             cprint("{} iterations".format(self.iterations), "magenta")
-            if self.board_has_been_updated is False:
-                cprint("No updates made on this iteration", "red")
-                exit()
-            self.board_has_been_updated = False
+            # if self.board_has_been_updated is False:
+            #     cprint("No updates made on this iteration", "red")
+            #     exit()
+            # self.board_has_been_updated = False
 
     def update_rows(self):
         # cprint("Update rows", "green")
@@ -72,7 +72,7 @@ class Sudoku:
                     if self.board[i][j] is None:
                         # cprint("updating board[{}][{}]: {}".format(i, j, new_possible_cell_nums[0]), "green")
                         self.board[i][j] = new_possible_cell_nums[0]
-                        self.board_has_been_updated = True
+                        # self.board_has_been_updated = True
 
     def update_columns(self):
         # cprint("Update columns", "green")
@@ -101,10 +101,10 @@ class Sudoku:
                     if self.board[j][i] is None:
                         # cprint("updating board[{}][{}]: {}".format(j, i, new_possible_cell_nums[0]), "green")
                         self.board[j][i] = new_possible_cell_nums[0]
-                        self.board_has_been_updated = True
+                        # self.board_has_been_updated = True
 
     def update_squares(self):
-        cprint("Update squares", "green")
+        # cprint("Update squares", "green")
         # loop over number of squares on x
         for i in range(3):
             # loop over number of squares on y
@@ -131,10 +131,10 @@ class Sudoku:
                         if self.board[cell_x_and_y[0]][cell_x_and_y[1]] is None:
                             # cprint("updating board[{}][{}]: {}".format(cell_x_and_y[0], cell_x_and_y[1], new_possible_cell_nums[0]), "green")
                             self.board[cell_x_and_y[0]][cell_x_and_y[1]] = new_possible_cell_nums[0]
-                            self.board_has_been_updated = True
+                            # self.board_has_been_updated = True
 
     def check_board(self):
-        cprint("check board", "red")
+        # cprint("check board", "red")
         has_nones = False
         for row in self.board:
             for cell in row:
