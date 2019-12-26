@@ -20,19 +20,19 @@ class Sudoku:
         self.initial_board = initial_board
 
     def populate_initial_board(self):
-        cprint("Populate initial board", "green")
         # iterate over the initial board by row
         for i, row in enumerate(self.initial_board):
             # iterate over each cell in the row
             for j, cell in enumerate(row):
                 # if a cell has a value, update the board and possible nums
                 if cell is not None:
-                    print(cell)
                     self.board[i][j] = cell
                     self.possible_cell_nums[i][j] = [cell]
                     self.board_has_been_updated = True
 
     def solve_board(self):
+        cprint("starting to solve", "magenta")
+        self.print_board()
         while not self.is_solved:
             self.update_rows()
             self.update_columns()
@@ -46,17 +46,17 @@ class Sudoku:
             self.board_has_been_updated = False
 
     def update_rows(self):
-        cprint("Update rows", "green")
+        # cprint("Update rows", "green")
         # iterate over current rows in board
         for i in range(len(self.board)):
-            cprint("Row {}".format(i), "cyan")
+            # cprint("Row {}".format(i), "cyan")
             row = self.board[i]
             # what numbers are already populated for this row
             existing_row_nums = [_ for _ in row if _ is not None]
-            print("Existent row nums: {}".format(existing_row_nums))
+            # print("Existent row nums: {}".format(existing_row_nums))
             # iterate over each cell in the row
             for j in range(len(row)):
-                print("cell {} of row {}: {}".format(j, i, self.board[i][j]))
+                # print("cell {} of row {}: {}".format(j, i, self.board[i][j]))
                 # the possible values known so far for the current cell
                 cell_possible_nums = self.possible_cell_nums[i][j]
                 # if the length of cell possible nums is already one, then we're done here
@@ -66,26 +66,26 @@ class Sudoku:
                 new_possible_cell_nums = [num for num in cell_possible_nums if num not in existing_row_nums]
                 # set it and forget it
                 self.possible_cell_nums[i][j] = new_possible_cell_nums
-                print("cell possible nums: {}".format(cell_possible_nums))
+                # print("cell possible nums: {}".format(cell_possible_nums))
                 # if the length of new possible cell nums is 1, we just found the number
                 if len(new_possible_cell_nums) == 1:
                     if self.board[i][j] is None:
-                        cprint("updating board[{}][{}]: {}".format(i, j, new_possible_cell_nums[0]), "green")
+                        # cprint("updating board[{}][{}]: {}".format(i, j, new_possible_cell_nums[0]), "green")
                         self.board[i][j] = new_possible_cell_nums[0]
                         self.board_has_been_updated = True
 
     def update_columns(self):
-        cprint("Update columns", "green")
+        # cprint("Update columns", "green")
         # iterate over current rows in board
         for i in range(len(self.board)):
             col = [_ for _ in [row[i] for row in self.board]]
-            cprint("column {}: {}".format(i, col), "cyan")
+            # cprint("column {}: {}".format(i, col), "cyan")
             # what numbers are already populated for this column
             existing_col_nums = [ _ for _ in col if _ is not None ]
-            print("Existent col nums: {}".format(existing_col_nums))
+            # print("Existent col nums: {}".format(existing_col_nums))
             # iterate over each cell in the column
             for j in range(len(col)):
-                print("cell {} of col {}: {}".format(j, i, self.board[j][i]))
+                # print("cell {} of col {}: {}".format(j, i, self.board[j][i]))
                 # the possible values known so far for the current cell
                 cell_possible_nums = self.possible_cell_nums[j][i]
                 # if it's already one long, we already have the num
@@ -95,11 +95,11 @@ class Sudoku:
                 new_possible_cell_nums = [num for num in cell_possible_nums if num not in existing_col_nums]
                 # set it and forget it
                 self.possible_cell_nums[j][i] = new_possible_cell_nums
-                print("cell possible nums: {}".format(cell_possible_nums))
+                # print("cell possible nums: {}".format(cell_possible_nums))
                 # if the length of possible cell nums is 1, that's the answer
                 if len(new_possible_cell_nums) == 1:
                     if self.board[j][i] is None:
-                        cprint("updating board[{}][{}]: {}".format(j, i, new_possible_cell_nums[0]), "green")
+                        # cprint("updating board[{}][{}]: {}".format(j, i, new_possible_cell_nums[0]), "green")
                         self.board[j][i] = new_possible_cell_nums[0]
                         self.board_has_been_updated = True
 
@@ -117,7 +117,7 @@ class Sudoku:
                         current_cell = self.board[i*3+square_i][j*3+square_j]
                         if current_cell is not None:
                             existing_square_nums.append(current_cell)
-                cprint(existing_square_nums, "red")
+                # cprint(existing_square_nums, "red")
                 for cell_x_and_y in cells_to_check:
                     cell_possible_nums = self.possible_cell_nums[cell_x_and_y[0]][cell_x_and_y[1]]
                     # already found, continue
@@ -125,11 +125,11 @@ class Sudoku:
                         continue
                     new_possible_cell_nums = [num for num in cell_possible_nums if num not in existing_square_nums]
                     self.possible_cell_nums[cell_x_and_y[0]][cell_x_and_y[1]] = new_possible_cell_nums
-                    print("cell possible nums: {}".format(new_possible_cell_nums))
+                    # print("cell possible nums: {}".format(new_possible_cell_nums))
                     # found the answer
                     if len(new_possible_cell_nums) == 1:
                         if self.board[cell_x_and_y[0]][cell_x_and_y[1]] is None:
-                            cprint("updating board[{}][{}]: {}".format(cell_x_and_y[0], cell_x_and_y[1], new_possible_cell_nums[0]), "green")
+                            # cprint("updating board[{}][{}]: {}".format(cell_x_and_y[0], cell_x_and_y[1], new_possible_cell_nums[0]), "green")
                             self.board[cell_x_and_y[0]][cell_x_and_y[1]] = new_possible_cell_nums[0]
                             self.board_has_been_updated = True
 
