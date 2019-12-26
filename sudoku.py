@@ -9,6 +9,7 @@ class Sudoku:
     def __init__(self, initial_board):
         self.is_solved = False
         self.iterations = 0
+        self.board_has_been_updated = False
         # the game board used after the initial_board is parsed.
         # an array that has 9 arrays that have 9 values each
         # self.board[0] is the first row
@@ -28,6 +29,7 @@ class Sudoku:
                 if cell is not None:
                     self.board[i][j] = cell
                     self.possible_cell_nums[i][j] = [cell]
+                    self.board_has_been_updated = True
 
     def solve_board(self):
         while not self.is_solved:
@@ -37,6 +39,10 @@ class Sudoku:
             self.iterations += 1
             self.check_board()
             cprint("{} iterations".format(self.iterations), "magenta")
+            if self.board_has_been_updated is False:
+                cprint("No updates made on this iteration", "red")
+                exit()
+            self.board_has_been_updated = False
 
     def update_rows(self):
         cprint("Update rows", "green")
@@ -63,8 +69,9 @@ class Sudoku:
                 # if the length of new possible cell nums is 1, we just found the number
                 if len(new_possible_cell_nums) == 1:
                     if self.board[i][j] is None:
-                        print("updating board[{}][{}]: {}".format(i, j, new_possible_cell_nums[0]))
+                        cprint("updating board[{}][{}]: {}".format(i, j, new_possible_cell_nums[0]), "green")
                         self.board[i][j] = new_possible_cell_nums[0]
+                        self.board_has_been_updated = True
 
     def update_columns(self):
         cprint("Update columns", "green")
@@ -91,16 +98,41 @@ class Sudoku:
                 # if the length of possible cell nums is 1, that's the answer
                 if len(new_possible_cell_nums) == 1:
                     if self.board[j][i] is None:
-                        print("updating board[{}][{}]: {}".format(j, i, new_possible_cell_nums[0]))
+                        cprint("updating board[{}][{}]: {}".format(j, i, new_possible_cell_nums[0]), "green")
                         self.board[j][i] = new_possible_cell_nums[0]
-        [print(_) for _ in self.possible_cell_nums]
+                        self.board_has_been_updated = True
 
     def update_squares(self):
         # loop over number of squares on x
         for i in range(3):
             # loop over number of squares on y
             for j in range(3):
-                pass
+                cells_to_check = []
+                existing_square_nums = []
+                for square_i in range(3):
+                    for square_j in range(3):
+                        cells_to_check.append([i*3+square_i, j*3+square_j])
+                        current_cell = self.board[i*3+square_i][j*3+square_j]
+                        if current_cell is not None:
+                            existing_square_nums.append(current_cell)
+                cprint(cells_to_check, "red")
+                cprint(existing_square_nums, "red")
+                for cell_x_and_y in cells_to_check:
+                    print(cell_x_and_y)
+                    cell_possible_nums = self.possible_cell_nums[cell_x_and_y[0]][cell_x_and_y[1]]
+                    # already found, continue
+                    if len(cell_possible_nums) == 1:
+                        continue
+                    new_possible_cell_nums = [num for num in cell_possible_nums if num not in existing_square_nums]
+                    self.possible_cell_nums[cell_x_and_y[0]][cell_x_and_y[1]] = new_possible_cell_nums
+                    print("cell possible nums: {}".format(new_possible_cell_nums))
+                    # found the answer
+                    if len(new_possible_cell_nums) == 1:
+                        if self.board[cell_x_and_y[0]][cell_x_and_y[1]] is None:
+                            cprint("updating board[{}][{}]: {}".format(cell_x_and_y[0], cell_x_and_y[1], new_possible_cell_nums[0]), "green")
+                            self.board_has_been_updated = True
 
     def check_board(self):
+        cprint("check board", "red")
+        cprint(self.board, "magenta")
         pass
