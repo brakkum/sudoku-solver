@@ -32,7 +32,6 @@ class Sudoku:
 
     def solve_board(self):
         cprint("starting to solve", "magenta")
-        self.print_board()
         while not self.is_solved:
             self.update_rows()
             self.update_columns()
@@ -55,6 +54,7 @@ class Sudoku:
             existing_row_nums = [_ for _ in row if _ is not None]
             # print("Existent row nums: {}".format(existing_row_nums))
             # iterate over each cell in the row
+            possible_num_locations = {}
             for j in range(len(row)):
                 # print("cell {} of row {}: {}".format(j, i, self.board[i][j]))
                 # the possible values known so far for the current cell
@@ -66,6 +66,10 @@ class Sudoku:
                 new_possible_cell_nums = [num for num in cell_possible_nums if num not in existing_row_nums]
                 # set it and forget it
                 self.possible_cell_nums[i][j] = new_possible_cell_nums
+                for num in new_possible_cell_nums:
+                    if num not in possible_num_locations.keys():
+                        possible_num_locations[num] = []
+                    possible_num_locations[num].append([i, j])
                 # print("cell possible nums: {}".format(cell_possible_nums))
                 # if the length of new possible cell nums is 1, we just found the number
                 if len(new_possible_cell_nums) == 1:
@@ -73,6 +77,14 @@ class Sudoku:
                         # cprint("updating board[{}][{}]: {}".format(i, j, new_possible_cell_nums[0]), "green")
                         self.board[i][j] = new_possible_cell_nums[0]
                         # self.board_has_been_updated = True
+            # cprint(possible_num_locations, "magenta")
+            for num in possible_num_locations.keys():
+                locations = possible_num_locations[num]
+                if len(locations) == 1:
+                    x, y = locations[0]
+                    if self.board[x][y] is None:
+                        self.board[x][y] = num
+                        self.possible_cell_nums[x][y] = [num]
 
     def update_columns(self):
         # cprint("Update columns", "green")
@@ -84,6 +96,7 @@ class Sudoku:
             existing_col_nums = [ _ for _ in col if _ is not None ]
             # print("Existent col nums: {}".format(existing_col_nums))
             # iterate over each cell in the column
+            possible_num_locations = {}
             for j in range(len(col)):
                 # print("cell {} of col {}: {}".format(j, i, self.board[j][i]))
                 # the possible values known so far for the current cell
@@ -95,6 +108,10 @@ class Sudoku:
                 new_possible_cell_nums = [num for num in cell_possible_nums if num not in existing_col_nums]
                 # set it and forget it
                 self.possible_cell_nums[j][i] = new_possible_cell_nums
+                for num in new_possible_cell_nums:
+                    if num not in possible_num_locations.keys():
+                        possible_num_locations[num] = []
+                    possible_num_locations[num].append([j, i])
                 # print("cell possible nums: {}".format(cell_possible_nums))
                 # if the length of possible cell nums is 1, that's the answer
                 if len(new_possible_cell_nums) == 1:
@@ -102,6 +119,13 @@ class Sudoku:
                         # cprint("updating board[{}][{}]: {}".format(j, i, new_possible_cell_nums[0]), "green")
                         self.board[j][i] = new_possible_cell_nums[0]
                         # self.board_has_been_updated = True
+            for num in possible_num_locations.keys():
+                locations = possible_num_locations[num]
+                if len(locations) == 1:
+                    x, y = locations[0]
+                    if self.board[x][y] is None:
+                        self.board[x][y] = num
+                        self.possible_cell_nums[x][y] = [num]
 
     def update_squares(self):
         # cprint("Update squares", "green")
@@ -118,12 +142,18 @@ class Sudoku:
                         if current_cell is not None:
                             existing_square_nums.append(current_cell)
                 # cprint(existing_square_nums, "red")
+                # dict of possible num locations, ie {9: [[1,2],[2,2]}
+                possible_num_locations = {}
                 for cell_x_and_y in cells_to_check:
                     cell_possible_nums = self.possible_cell_nums[cell_x_and_y[0]][cell_x_and_y[1]]
                     # already found, continue
                     if len(cell_possible_nums) == 1:
                         continue
                     new_possible_cell_nums = [num for num in cell_possible_nums if num not in existing_square_nums]
+                    for num in new_possible_cell_nums:
+                        if num not in possible_num_locations.keys():
+                            possible_num_locations[num] = []
+                        possible_num_locations[num].append([cell_x_and_y[0], cell_x_and_y[1]])
                     self.possible_cell_nums[cell_x_and_y[0]][cell_x_and_y[1]] = new_possible_cell_nums
                     # print("cell possible nums: {}".format(new_possible_cell_nums))
                     # found the answer
@@ -132,6 +162,13 @@ class Sudoku:
                             # cprint("updating board[{}][{}]: {}".format(cell_x_and_y[0], cell_x_and_y[1], new_possible_cell_nums[0]), "green")
                             self.board[cell_x_and_y[0]][cell_x_and_y[1]] = new_possible_cell_nums[0]
                             # self.board_has_been_updated = True
+                for num in possible_num_locations.keys():
+                    locations = possible_num_locations[num]
+                    if len(locations) == 1:
+                        x, y = locations[0]
+                        if self.board[x][y] is None:
+                            self.board[x][y] = num
+                            self.possible_cell_nums[x][y] = [num]
 
     def check_board(self):
         # cprint("check board", "red")
