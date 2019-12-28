@@ -208,6 +208,8 @@ class Sudoku:
                     cprint("|", "blue", end="")
             cprint("")
             if (i + 1) % 3 == 0 and i < 8:
-                cprint(" {:-<35} ".format(""), "red", end="\n")
+                cprint("|", "blue", end="")
+                cprint("{:-<35}".format(""), "red", end="")
+                cprint("|", "blue", end="\n")
         cprint(u" {:\u2594<35} ".format(""), "blue", end="\n")
 
