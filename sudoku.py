@@ -1,3 +1,5 @@
+import time
+
 from termcolor import cprint
 
 
@@ -32,6 +34,10 @@ class Sudoku:
 
     def solve_board(self):
         cprint("starting to solve", "magenta")
+        self.print_board()
+        for i in range(3, 0, -1):
+            cprint("in {}".format(i), "magenta", end="\r")
+            time.sleep(1)
         while not self.is_solved:
             self.update_rows()
             self.update_columns()
@@ -187,6 +193,21 @@ class Sudoku:
         # [cprint(_, "green") for _ in self.possible_cell_nums]
 
     def print_board(self):
-        for row in self.board:
-            cprint(" | ".join([str(_) if _ is not None else " " for _ in row]))
+        cprint(u" {:_<35} ".format(""), "blue", end="\n")
+        for i, row in enumerate(self.board):
+            # cprint(" | ".join([str(_) if _ is not None else " " for j, _ in enumerate(row)]))
+            cprint("|", "blue", end="")
+            for j, cell in enumerate(row):
+                if cell is None:
+                    cprint("   ", "white", end="")
+                else:
+                    cprint(" {} ".format(cell), "white", end="")
+                if  (j + 1) % 3 == 0 and j < 8:
+                    cprint("|", "red", end="")
+                else:
+                    cprint("|", "blue", end="")
+            cprint("")
+            if (i + 1) % 3 == 0 and i < 8:
+                cprint(" {:-<35} ".format(""), "red", end="\n")
+        cprint(u" {:\u2594<35} ".format(""), "blue", end="\n")
 
